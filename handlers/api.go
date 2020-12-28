@@ -607,7 +607,7 @@ func ApiValidatorProposals(w http.ResponseWriter, r *http.Request) {
 // @Summary Returns charts from the page https://eth2.redot.com/charts as PNG
 // @Tags Charts
 // @Produce  json
-// @Param  chart path string true "Chart name (see https://github.com/gobitfly/eth2-beaconchain-explorer/blob/master/services/charts_updater.go#L20 for all available names)"
+// @Param  chart path string true "Chart name (see https://github.com/AtlantPlatform/eth2-redot-com/blob/master/services/charts_updater.go#L20 for all available names)"
 // @Success 200 {object} string
 // @Router /api/v1/chart/{chart} [get]
 func ApiChart(w http.ResponseWriter, r *http.Request) {

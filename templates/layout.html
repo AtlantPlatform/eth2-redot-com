@@ -465,10 +465,6 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     </a>
-                    <a class="dropdown-item" href="/stakingServices">
-                        <span class="nav-icon"><i class="fas fa-drumstick-bite mr-2"></i></span>
-                        <span class="nav-text">Staking Services</span>
-                    </a>
                     <a class="dropdown-item" href="/ethClients">
                         <span class="nav-icon"><i class="fas fa-desktop mr-2"></i></span>
                         <span class="nav-text">Ethereum Clients</span>
@@ -478,7 +474,7 @@
                         <span class="nav-text">Educational Material</span>
                     </a>
                     <hr>
-                    <a class="dropdown-item" target="_blank" href="https://beaconcha.in/api/v1/docs/index.html">
+                    <a class="dropdown-item" target="_blank" href="/api/v1/docs/index.html">
                         <span class="nav-icon">
                             <i class="fas fa-laptop-code mr-2"></i>
                         </span>
@@ -486,55 +482,6 @@
                     </a>
                     </div>
                 </li>
-                    <li class="nav-item dropdown {{ if eq .Active "more"}}active{{end}}">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="nav-icon">
-								<i class="fas fa-info mr-2"></i>
-							</span>
-                            <span class="nav-text">
-								More
-							</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="https://apps.apple.com/at/app/beaconchain-dashboard/id1541822121">
-								<span class="nav-icon">
-									<i class="fab fa-apple mr-2"></i>
-								</span>
-                                <span class="nav-text">iOS App</span>
-                            </a>
-                            <a class="dropdown-item" href="https://play.google.com/store/apps/details?id=in.beaconcha.mobile">
-								<span class="nav-icon">
-									<i class="fab fa-android mr-2"></i>
-								</span>
-                                <span class="nav-text">Android App</span>
-                            </a>
-                            <hr>
-                          
-                            <a class="dropdown-item" href="/graffitiwall">
-								<span class="nav-icon">
-									<i class="fas fa-paint-brush mr-1"></i>
-								</span>
-                                <span class="nav-text">
-									Graffiti Wall
-								</span>
-                            </a>
-                            <a class="dropdown-item" href="/poap">
-								<span class="nav-icon">
-									<i class="fas fa-medal mr-1"></i>
-								</span>
-                                <span class="nav-text">
-									POAP
-								</span>
-                            </a>
-                            <a ga-outbound class="dropdown-item" href="https://kb.beaconcha.in">
-                                <span class="nav-icon">
-                                    <i class="fas fa-external-link-alt mr-2"></i>
-                                </span>
-                                <span class="nav-text">Knowledge Base</span>
-                            </a>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -573,7 +520,7 @@
         <footer class="container">
             <div class="text-center row justify-content-center">
                 <div class="col-12">
-                    <span>© bitfly gmbh 2020 | {{.Version}} |</span>
+                    <span>© eth2.redot.com 2020 | {{.Version}} |</span>
                     <div class="theme-switch-wrapper">
                         <label class="theme-switch" for="toggleSwitch">
                             <input type="checkbox" id="toggleSwitch"/>

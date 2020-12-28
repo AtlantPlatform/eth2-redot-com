@@ -230,7 +230,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Chart name (see https://github.com/gobitfly/eth2-beaconchain-explorer/blob/master/services/charts_updater.go#L20 for all available names)",
+                        "description": "Chart name (see https://github.com/AtlantPlatform/eth2-redot-com/blob/master/services/charts_updater.go#L20 for all available names)",
                         "name": "chart",
                         "in": "path",
                         "required": true
