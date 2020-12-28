@@ -34,7 +34,7 @@ var ChartHandlers = map[string]chartHandler{
 	"performance_distribution_365d":  {12, performanceDistribution365dChartData},
 	"deposits":                       {13, depositsChartData},
 	"deposits_distribution":          {13, depositsDistributionChartData},
-	"graffiti_wordcloud":             {14, graffitiCloudChartData},
+	// "graffiti_wordcloud":             {14, graffitiCloudChartData},
 }
 
 // LatestChartsPageData returns the latest chart page data
