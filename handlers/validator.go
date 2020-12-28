@@ -85,7 +85,7 @@ func Validator(w http.ResponseWriter, r *http.Request) {
 			}
 			validatorPageData.DepositsCount = uint64(len(deposits.Eth1Deposits))
 			if err != nil || len(deposits.Eth1Deposits) == 0 {
-				data.Meta.Title = fmt.Sprintf("%v - Validator %x - beaconcha.in - %v", utils.Config.Frontend.SiteName, pubKey, time.Now().Year())
+				data.Meta.Title = fmt.Sprintf("%v - Validator %x - %v - %v", utils.Config.Frontend.SiteName, pubKey, utils.Config.Frontend.SiteDomain, time.Now().Year())
 				data.Meta.Path = fmt.Sprintf("/validator/%v", index)
 				err := validatorNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 				if err != nil {
@@ -202,7 +202,7 @@ func Validator(w http.ResponseWriter, r *http.Request) {
 
 	// GetAvgOptimalInclusionDistance(index)
 
-	data.Meta.Title = fmt.Sprintf("%v - Validator %v - beaconcha.in - %v", utils.Config.Frontend.SiteName, index, time.Now().Year())
+	data.Meta.Title = fmt.Sprintf("%v - Validator %v - %v - %v", utils.Config.Frontend.SiteName, index, utils.Config.Frontend.SiteDomain, .Now().Year())
 	data.Meta.Path = fmt.Sprintf("/validator/%v", index)
 
 	//logger.Infof("retrieving data, elapsed: %v", time.Since(start))

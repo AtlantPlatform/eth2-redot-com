@@ -5,8 +5,8 @@ Highcharts.setOptions({
     },
     credits: {
       enabled: true,
-      href: 'https://beaconcha.in',
-      text: 'beaconcha.in',
+      href: 'https://eth2.redot.com',
+      text: 'eth2.redot.com',
       style: {
         color: 'var(--body-color)'
       },

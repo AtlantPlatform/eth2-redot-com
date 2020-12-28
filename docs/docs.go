@@ -226,7 +226,7 @@ var doc = `{
                 "tags": [
                     "Charts"
                 ],
-                "summary": "Returns charts from the page https://beaconcha.in/charts as PNG",
+                "summary": "Returns charts from the page https://eth2.redot.com/charts as PNG",
                 "parameters": [
                     {
                         "type": "string",
@@ -989,8 +989,8 @@ var doc = `{
         "OAuthAccessCode": {
             "type": "oauth2",
             "flow": "accessCode",
-            "authorizationUrl": "https://beaconcha.in/user/authorize",
-            "tokenUrl": "https://beaconcha.in/user/token"
+            "authorizationUrl": "https://eth2.redot.com/user/authorize",
+            "tokenUrl": "https://eth2.redot.com/user/token"
         }
     }
 }`
@@ -1010,8 +1010,8 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "Beaconcha.in ETH2 API",
-	Description: "High performance API for querying information from the Ethereum 2.0 beacon chain\nThe API is currently free to use. A fair use policy applies. Calls are rate limited to\n10 requests / 1 minute / IP. All API results are cached for 1 minute.\nIf you required a higher usage plan please checkout https://beaconcha.in/pricing.",
+	Title:       "redot.com ETH2 API",
+	Description: "High performance API for querying information from the Ethereum 2.0 beacon chain\nThe API is currently free to use. A fair use policy applies. Calls are rate limited to\n10 requests / 1 minute / IP. All API results are cached for 1 minute.\n",
 }
 
 type s struct{}

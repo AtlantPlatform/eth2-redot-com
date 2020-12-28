@@ -42,8 +42,7 @@ info:
     High performance API for querying information from the Ethereum 2.0 beacon chain
     The API is currently free to use. A fair use policy applies. Calls are rate limited to
     10 requests / 1 minute / IP. All API results are cached for 1 minute.
-    If you required a higher usage plan please checkout https://beaconcha.in/pricing.
-  title: Beaconcha.in ETH2 API
+  title: ETH2 Redot.com API
   version: "1.0"
 paths:
   /api/healthz:
@@ -615,8 +614,8 @@ securityDefinitions:
     name: Authorization
     type: apiKey
   OAuthAccessCode:
-    authorizationUrl: https://beaconcha.in/user/authorize
+    authorizationUrl: https://eth2.redot.com/user/authorize
     flow: accessCode
-    tokenUrl: https://beaconcha.in/user/token
+    tokenUrl: https://eth2.redot.com/user/token
     type: oauth2
 swagger: "2.0"
