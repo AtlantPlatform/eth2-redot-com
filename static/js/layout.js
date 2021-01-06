@@ -14,10 +14,10 @@ $(document).ready(function() {
   }
 })
 
-$(document).ready(function() {
-  var currentTheme = localStorage.getItem('theme');
-  snow(currentTheme)
-})
+// $(document).ready(function() {
+  // var currentTheme = localStorage.getItem('theme');
+  // snow(currentTheme)
+// })
 
 var snowFlakes = null;
 function snow(theme) {

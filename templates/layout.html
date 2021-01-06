@@ -240,6 +240,17 @@
                     [data-theme='dark'] .svg-logo {
                         color: #fff;
                     }
+                    .slogan { color: #595458; font-size: 16px; margin-bottom: -16px; }
+                    .slogan .link { color: #000; font-weight: bold; }
+                    [data-theme='dark'] .slogan .link { color: #fff; }
+                    @media screen and (max-width: 639px){ 
+                        .slogan { display: none; }
+                    }
+                    a.regular { background: none !important; }
+                    .mode-light { display: block; }
+                    .mode-dark { display: none; }
+                    [data-theme='dark'] .mode-light { display: none; }
+                    [data-theme='dark'] .mode-dark { display: block; }
                 </style>
                 <svg class="svg-logo" width="80" height="24" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M65.0675 5.50545C64.0867 5.08515 63.036 4.875 61.9152 4.875C60.7944 4.875 59.7437 5.08515 58.763 5.50545C57.7823 5.92575 56.9277 6.50015 56.1991 7.22868C55.4706 7.9572 54.8962 8.8118 54.4759 9.7925C54.0556 10.7732 53.8455 11.8239 53.8455 12.9447C53.8455 14.0656 54.0556 15.1163 54.4759 16.097C54.8962 17.0777 55.4706 17.9323 56.1991 18.6608C56.9277 19.3893 57.7823 19.9637 58.763 20.384C59.7437 20.8043 60.7944 21.0145 61.9152 21.0145C63.036 21.0145 64.0867 20.8043 65.0675 20.384C66.0482 19.9637 66.9028 19.3893 67.6313 18.6608C68.3598 17.9323 68.9342 17.0777 69.3545 16.097C69.7748 15.1163 69.985 14.0656 69.985 12.9447C69.985 11.8239 69.7748 10.7732 69.3545 9.7925C68.9342 8.8118 68.3598 7.9572 67.6313 7.22868C66.9028 6.50015 66.0482 5.92575 65.0675 5.50545ZM63.4568 16.5872C62.9711 16.7927 62.4574 16.8954 61.9157 16.8954C61.374 16.8954 60.8603 16.7927 60.3746 16.5872C59.8889 16.3817 59.4686 16.1015 59.1137 15.7466C58.7588 15.3917 58.4786 14.9714 58.2731 14.4857C58.0676 14 57.9649 13.4863 57.9649 12.9446C57.9649 12.4029 58.0676 11.8892 58.2731 11.4035C58.4786 10.9178 58.7588 10.4976 59.1137 10.1426C59.4686 9.78771 59.8889 9.50751 60.3746 9.30203C60.8603 9.09655 61.374 8.99381 61.9157 8.99381C62.4574 8.99381 62.9711 9.09655 63.4568 9.30203C63.9425 9.50751 64.3628 9.78771 64.7177 10.1426C65.0726 10.4976 65.3528 10.9178 65.5583 11.4035C65.7638 11.8892 65.8665 12.4029 65.8665 12.9446C65.8665 13.4863 65.7638 14 65.5583 14.4857C65.3528 14.9714 65.0726 15.3917 64.7177 15.7466C64.3628 16.1015 63.9425 16.3817 63.4568 16.5872Z" fill="currentColor"/>
@@ -478,22 +489,25 @@
                         <span class="nav-text">Services</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    </a>
-                    <a class="dropdown-item" href="/ethClients">
-                        <span class="nav-icon"><i class="fas fa-desktop mr-2"></i></span>
-                        <span class="nav-text">Ethereum Clients</span>
-                    </a>
-                    <a class="dropdown-item" href="/education">
-                        <span class="nav-icon"><i class="fa fa-book mr-2"></i></span>
-                        <span class="nav-text">Educational Material</span>
-                    </a>
-                    <hr>
-                    <a class="dropdown-item" target="_blank" href="/api/v1/docs/index.html">
-                        <span class="nav-icon">
-                            <i class="fas fa-laptop-code mr-2"></i>
-                        </span>
-                        <span class="nav-text">API Docs</span>
-                    </a>
+                        <a class="dropdown-item" href="https://redot.com/">
+                            <span class="nav-icon"><i class="fas fa-drumstick-bite mr-2"></i></span>
+                            <span class="nav-text">Free ETH Staking</span>
+                        </a>
+                        <a class="dropdown-item" href="/ethClients">
+                            <span class="nav-icon"><i class="fas fa-desktop mr-2"></i></span>
+                            <span class="nav-text">Ethereum Clients</span>
+                        </a>
+                        <a class="dropdown-item" href="/education">
+                            <span class="nav-icon"><i class="fa fa-book mr-2"></i></span>
+                            <span class="nav-text">Educational Material</span>
+                        </a>
+                        <hr>
+                        <a class="dropdown-item" target="_blank" href="/api/v1/docs/index.html">
+                            <span class="nav-icon">
+                                <i class="fas fa-laptop-code mr-2"></i>
+                            </span>
+                            <span class="nav-text">API Docs</span>
+                        </a>
                     </div>
                 </li>
                 </ul>
@@ -512,7 +526,7 @@
 					</div>
 				</div>
 				{{end}} -->
-        {{if .InfoBanner}}
+        <!-- {{if .InfoBanner}}
             <div id="infoBanner">
                 <div style="overflow-wrap: break-word;background-color: var(--bg-color-light);" class="d-none d-md-flex justify-content-center align-items-center p-2">
                     {{.InfoBanner}}
@@ -524,7 +538,7 @@
                     <i id="infoBannerDissBtn" class="far fa-times-circle btn" data-toggle="tooltip" data-placement="bottom" title="Dismiss" onClick="hideInfoBanner({{.InfoBanner}})"></i>
                 </div>
             </div>
-        {{end}}
+        {{end}} -->
       
         {{ template "content" . }}
     </main>
