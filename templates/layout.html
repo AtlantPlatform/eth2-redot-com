@@ -669,7 +669,23 @@
         if (localStorage.getItem("infoBannerStatus")==={{.InfoBanner}}){
             hideInfoBanner({{.InfoBanner}})
         }
-	</script>
+    </script>
+    
+    <script>
+        function hideCookieBanner(){
+            $('#cookie-banner').attr("class", "d-none");
+        }
+        function acceptCookieBanner() {
+                document.cookie = "cookie=accepted;expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/"
+                hideCookieBanner()
+        }
+        
+        if (document.cookie.indexOf("cookie=accepted")!=-1){
+            hideCookieBanner()
+        }else{
+            $('#cookie-banner').attr("class", "");
+        }
+    </script>
 
     <script src="/bundle/js/clipboard.min.js"></script>
     {{ template "js" .Data }}
