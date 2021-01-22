@@ -233,6 +233,8 @@
          id="nav" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class=navbar-brand href="/">
+                <i style="color: var(--font-color)" class="fas fa-satellite-dish mr-2"></i>
+                <span class="brand-text">beaconcha.in</span>
                 <style>
                     .svg-logo {
                         color: #000;
@@ -242,7 +244,7 @@
                         color: #fff;
                     }
                     
-                    .slogan { color: #595458; font-size: 16px; margin-bottom: -16px; }
+                    .slogan { color: #595458; font-size: 16px; }
                     .slogan .link { color: #000; font-weight: bold; }
                     [data-theme='dark'] .slogan .link { color: #fff; }
                     @media screen and (max-width: 639px){ 
@@ -255,6 +257,7 @@
                     [data-theme='dark'] .mode-dark { display: block; }
 
                 </style>
+                <!--
                 <svg class="svg-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 121.8 25.89">
                     <defs>
                         <style>
@@ -282,9 +285,10 @@
                         </g>
                     </g>
                 </svg>
+                -->
             </a>
             <div class="slogan">
-                ETH2 Explorer by <a class="link" href="https://redot.com/">redot.com</a>
+                ETH 2.0 explorer mirror by <a class="link" href="https://redot.com/">redot.com</a>
             </div>
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -294,7 +298,6 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-
                     <!--<li class="nav-item">
                         <a ga-outbound="" class="nav-link text-primary"
                            href="https://gitcoin.co/grants/collections?collection_id=14#">
@@ -584,7 +587,7 @@
         <footer class="container">
             <div class="text-center row justify-content-center">
                 <div class="col-12">
-                    <span>eth2.redot.com | {{.Version}} |</span>
+                    <span>© bitfly gmbh 2021 mirror by <a href="https://redot.com">redot.com</a>| {{.Version}} |</span>
                     <div class="theme-switch-wrapper">
                         <label class="theme-switch" for="toggleSwitch">
                             <input type="checkbox" id="toggleSwitch"/>
