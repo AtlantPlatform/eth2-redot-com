@@ -233,8 +233,6 @@
          id="nav" class="navbar navbar-expand-lg navbar-light">
         <div class="container">
             <a class=navbar-brand href="/">
-                <i style="color: var(--font-color)" class="fas fa-satellite-dish mr-2"></i>
-                <span class="brand-text">beaconcha.in</span>
                 <style>
                     .svg-logo {
                         color: #000;
@@ -257,7 +255,7 @@
                     [data-theme='dark'] .mode-dark { display: block; }
 
                 </style>
-                <!--
+                
                 <svg class="svg-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 121.8 25.89">
                     <defs>
                         <style>
@@ -285,10 +283,10 @@
                         </g>
                     </g>
                 </svg>
-                -->
+               
             </a>
             <div class="slogan">
-                ETH 2.0 explorer mirror by <a class="link" href="https://redot.com/">redot.com</a>
+                ETH2 explorer by <a class="link" href="https://redot.com/">redot.com</a>
             </div>
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -516,10 +514,10 @@
                         <span class="nav-text">Services</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <!--<a class="dropdown-item" href="https://redot.com/">
+			<a class="dropdown-item" href="https://redot.com/staking">
                             <span class="nav-icon"><i class="fas fa-drumstick-bite mr-2"></i></span>
-                            <span class="nav-text">Free ETH Staking</span>
-                        </a>-->
+                            <span class="nav-text">ETH2 Staking</span>
+                        </a>
                         <a class="dropdown-item" href="/ethClients">
                             <span class="nav-icon"><i class="fas fa-desktop mr-2"></i></span>
                             <span class="nav-text">Ethereum Clients</span>
@@ -587,7 +585,7 @@
         <footer class="container">
             <div class="text-center row justify-content-center">
                 <div class="col-12">
-                    <span>© bitfly gmbh 2021 mirror by <a href="https://redot.com">redot.com</a>| {{.Version}} |</span>
+                    <span>eth2.redot.com | {{.Version}} | <a href="https://github.com/AtlantPlatform/eth2-redot-com">Source</a> |</span>
                     <div class="theme-switch-wrapper">
                         <label class="theme-switch" for="toggleSwitch">
                             <input type="checkbox" id="toggleSwitch"/>
@@ -614,8 +612,13 @@
                             }
                         </script>
                     </div>
+		</div> <!-- .col-12 -->
+	    </div> <!-- .row -->
+            <div class="text-center row justify-content-center">
+	        <div class="col-12">
+                    <span>A fork of <a href="https://beaconcha.in/">beaconcha.in</a></span>
                 </div>
-            </div>
+	    </div>
         </footer>
     </div>
 
