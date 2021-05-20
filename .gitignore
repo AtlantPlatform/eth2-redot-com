@@ -8,6 +8,7 @@ docker/
 templates/imprint.html
 config.yml
 config-local.yml
+config-eth2.yml
 config-staging.yml
 config-pyrmont.yml
 config-lighthouse.yml

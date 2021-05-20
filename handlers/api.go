@@ -21,15 +21,15 @@ import (
 	"github.com/mssola/user_agent"
 )
 
-// @title Beaconcha.in ETH2 API
+// @title Eth2.redot.com ETH2 API
 // @version 1.0
 // @description High performance API for querying information from the Ethereum 2.0 beacon chain
 // @description The API is currently free to use. A fair use policy applies. Calls are rate limited to
 // @description 10 requests / 1 minute / IP. All API results are cached for 1 minute.
-// @description If you required a higher usage plan please checkout https://beaconcha.in/pricing.
+// @description If you required a higher usage plan please checkout https://eth2.redot.com/pricing.
 // @securitydefinitions.oauth2.accessCode OAuthAccessCode
-// @tokenurl https://beaconcha.in/user/token
-// @authorizationurl https://beaconcha.in/user/authorize
+// @tokenurl https://eth2.redot.com/user/token
+// @authorizationurl https://eth2.redot.com/user/authorize
 // @securitydefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
@@ -760,7 +760,7 @@ func ApiGraffitiwall(w http.ResponseWriter, r *http.Request) {
 }
 
 // ApiChart godoc
-// @Summary Returns charts from the page https://beaconcha.in/charts as PNG
+// @Summary Returns charts from the page https://eth2.redot.com/charts as PNG
 // @Tags Charts
 // @Produce  json
 // @Param  chart path string true "Chart name (see https://github.com/gobitfly/eth2-beaconchain-explorer/blob/master/services/charts_updater.go#L20 for all available names)"

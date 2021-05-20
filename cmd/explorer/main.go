@@ -131,7 +131,7 @@ func main() {
 
 		if !utils.Config.Frontend.OnlyAPI {
 			if utils.Config.Frontend.SiteDomain == "" {
-				utils.Config.Frontend.SiteDomain = "beaconcha.in"
+				utils.Config.Frontend.SiteDomain = "eth2.redot.com"
 			}
 
 			logrus.Infof("frontend database connection established")

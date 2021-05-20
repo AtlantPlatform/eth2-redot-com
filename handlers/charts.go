@@ -89,7 +89,9 @@ func GenericChart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data.Meta.Title = fmt.Sprintf("%v - %v Chart - beaconcha.in - %v", chartData.Title, utils.Config.Frontend.SiteName, time.Now().Year())
+	data.Meta.Title = fmt.Sprintf("%v - %v Chart - %s - %v", chartData.Title, utils.Config.Frontend.SiteName,
+		utils.Config.Frontend.SiteDomain,
+		time.Now().Year())
 	data.Meta.Path = "/charts/" + chartVar
 	data.Data = chartData
 

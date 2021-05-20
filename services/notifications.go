@@ -753,7 +753,7 @@ func (n *ethClientNotification) GetInfo(includeUrl bool) string {
 		case "Lighthouse":
 			url = "https://github.com/sigp/lighthouse/releases"
 		default:
-			url = "https://beaconcha.in/ethClients"
+			url = "https://eth2.redot.com/ethClients"
 		}
 
 		return generalPart + " " + url
