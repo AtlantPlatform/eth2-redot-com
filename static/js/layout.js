@@ -14,32 +14,6 @@ $(document).ready(function() {
   }
 })
 
-// $(document).ready(function() {
-  // var currentTheme = localStorage.getItem('theme');
-  // snow(currentTheme)
-// })
-
-var snowFlakes = null;
-function snow(theme) {
-  if (snowFlakes) {
-    try {
-        snowFlakes.destroy()
-    } catch (error) { }
-  } 
-  snowFlakes = new Snowflakes({
-      color: theme === 'dark' ? "#fff" : "#5ECDEF",
-      count: 9, // 100 snowflakes. Default: 50
-      minOpacity: theme === 'dark' ? 0.1 : 0.33, // From 0 to 1. Default: 0.6
-      maxOpacity: 0.95, // From 0 to 1. Default: 1
-      minSize: 10, // Default: 8
-      maxSize: 20, // Default: 18
-      rotation: true, // Default: true
-      speed: 1, // The property affects the speed of falling. Default: 1
-      wind: false, // Without wind. Default: true
-      zIndex: 100 // Default: 9999
-  });
-}
-
 // Theme switch
 function switchTheme(e) {
   var d1 = document.getElementById('app-theme');
@@ -48,12 +22,11 @@ function switchTheme(e) {
     d1.href = "/theme/css/beacon-light.min.css"
     document.documentElement.setAttribute('data-theme', 'light')
     localStorage.setItem('theme', 'light')
-    snow('light')
+
   } else { // dark theme
     d1.href = "/theme/css/beacon-dark.min.css"
     document.documentElement.setAttribute('data-theme', 'dark')
     localStorage.setItem('theme', 'dark')
-    snow('dark')
   }
 }
 $('#toggleSwitch').on('change', switchTheme)
@@ -64,8 +37,23 @@ function hideInfoBanner(msg){
 }
 // $("#infoBannerDissBtn").on('click', hideInfoBanner)
 
+function setValidatorEffectiveness(elem, eff){
+  if (elem===undefined) return
+  eff=parseInt(eff)
+  if (eff >= 100) {
+    $('#'+elem).html(`<span class="text-success"> ${eff}% - Perfect <i class="fas fa-grin-stars"></i>`)
+  } else if (eff > 80) {
+    $('#'+elem).html(`<span class="text-success"> ${eff}% - Good <i class="fas fa-smile"></i></span>`)
+  } else if (eff > 60) {
+    $('#'+elem).html(`<span class="text-warning"> ${eff}% - Fair <i class="fas fa-meh"></i></span>`)
+  } else {
+    $('#'+elem).html(`<span class="text-danger"> ${eff}% - Bad <i class="fas fa-frown"></i></span>`)
+  }
+}
+
 // typeahead
 $(document).ready(function() {
+  
   formatTimestamps() // make sure this happens before tooltips
   $('[data-toggle="tooltip"]').tooltip()
 

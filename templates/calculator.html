@@ -1,7 +1,7 @@
 {{ define "js" }}
-    <script src="/bundle/js/highcharts/highstock.min.js"></script>
-    <script src="/bundle/js/highcharts/annotations.min.js"></script>
-    <script src="/bundle/js/highcharts/highcharts-global-options.js"></script>
+    <script src="/js/highcharts/highstock.min.js"></script>
+    <script src="/js/highcharts/annotations.min.js"></script>
+    <script src="/js/highcharts/highcharts-global-options.js"></script>
     <script>
         // share
         var left = (screen.width - 570) / 2;
@@ -10,15 +10,15 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('twitter-share').addEventListener('click', function (e) {
                 e.preventDefault()
-                window.open('https://twitter.com/share?url=' + encodeURIComponent(window.location.href) + '&text=Calculate your potential Ethereum 2.0 earnings via the @etherchain_org eth2.redot.com explorer!&hashtag=ethereum&related=@etherchain_org', "NewWindow", windowParams)
+                window.open('https://twitter.com/share?url=' + encodeURIComponent(window.location.href) + '&text=Calculate your potential Ethereum 2.0 earnings via the @etherchain_org beaconcha.in explorer!&hashtag=ethereum&related=@etherchain_org', "NewWindow", windowParams)
             }, false)
             document.getElementById('facebook-share').addEventListener('click', function (e) {
                 e.preventDefault()
-                window.open('https://facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&t=Calculate your potential Ethereum 2.0 earnings via the @etherchain_org eth2.redot.com explorer!', "NewWindow", windowParams)
+                window.open('https://facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '&t=Calculate your potential Ethereum 2.0 earnings via the @etherchain_org beaconcha.in explorer!', "NewWindow", windowParams)
             }, false)
             document.getElementById('linkedin-share').addEventListener('click', function (e) {
                 e.preventDefault()
-                window.open('https://linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent("eth2.redot.com Staking Calculator") + '&summary=' + encodeURIComponent("Calculate your potential Ethereum 2.0 earnings via the @etherchain_org eth2.redot.com explorer!" + '&source=' + encodeURIComponent("https://eth2.redot.com")), "NewWindow", windowParams)
+                window.open('https://linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent("Beaconcha.in Staking Calculator") + '&summary=' + encodeURIComponent("Calculate your potential Ethereum 2.0 earnings via the @etherchain_org beaconcha.in explorer!" + '&source=' + encodeURIComponent("https://beaconcha.in")), "NewWindow", windowParams)
             }, false)
         })
 
@@ -97,7 +97,7 @@
                     RUB: 15277.44,
                     USD: 208.96,
                 }
-                this.config.totalEthSupply = 112748652436500000
+                this.config.totalEthSupply = 115113251499000000
                 this.config.showCosts = false
 
                 // the param key, encoding function, decoding function, include in url params bool, update element function
@@ -339,19 +339,18 @@
                             }
 
                         }).catch(err => {
-                        console.error(err)
-                        var ethSupply = this.config.totalEthSupply / 1e18
-                        document.getElementById('staking-variable-totalStake').setAttribute('max', ethSupply)
-                        document.getElementById('staking-variable-totalStake').setAttribute('value', (ethSupply) * 0.01)
-                        document.getElementById('staking-variable-totalStake-slider').setAttribute('max', ethSupply)
-                        document.getElementById('staking-variable-totalStake-slider').setAttribute('step', (ethSupply) * 0.0025)
-                        count += 1
-                        if (count == 2) {
-                            resolve()
-                        }
-                        // reject(err)
-
-                    })
+                            console.error(err)
+                            var ethSupply = this.config.totalEthSupply / 1e9
+                            document.getElementById('staking-variable-totalStake').setAttribute('max', ethSupply)
+                            document.getElementById('staking-variable-totalStake').setAttribute('value', (ethSupply) * 0.01)
+                            document.getElementById('staking-variable-totalStake-slider').setAttribute('max', ethSupply)
+                            document.getElementById('staking-variable-totalStake-slider').setAttribute('step', (ethSupply) * 0.0025)
+                            count += 1
+                            if (count == 2) {
+                                resolve()
+                            }
+                            // reject(err)
+                        })
 
                     fetch("https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=BTC,USD,EUR,GBP,JPY,RUB,CNY,AUD,CAD,CZK")
                         .then(res => res.json())
@@ -866,6 +865,9 @@
                                                 <button onclick="c.setCurrency('EUR')" type="button"
                                                         class="dropdown-item">EUR
                                                 </button>
+                                                <button onclick="c.setCurrency('GBP')" type="button"
+                                                        class="dropdown-item">GBP
+                                                </button>
                                                 <button onclick="c.setCurrency('BTC')" type="button"
                                                         class="dropdown-item">BTC
                                                 </button>
@@ -1007,7 +1009,7 @@
                          class="my-3 px-0 col-10 d-flex justif-content-center align-items-center">
                         <button style="width:38px; height:28px;" data-toggle="tooltip"
                                 data-original-title="Copy Link to Configuration" id="copy-button"
-                                data-clipboard-text="https://eth2.redot.com/calculator" type="button"
+                                data-clipboard-text="https://beaconcha.in/calculator" type="button"
                                 class="d-flex justify-content-center align-items-center btn btn-primary btn-sm m-1">
                             <i class="fa fa-copy"></i>
                         </button>

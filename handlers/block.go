@@ -30,7 +30,7 @@ var blockTemplate = template.Must(template.New("block").Funcs(utils.GetTemplateF
 	"templates/block/exits.html",
 	"templates/block/overview.html",
 ))
-var blockNotFoundTemplate = template.Must(template.New("blocknotfound").ParseFiles("templates/layout.html", "templates/blocknotfound.html"))
+var blockNotFoundTemplate = template.Must(template.New("blocknotfound").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/blocknotfound.html"))
 
 // Block will return the data for a block
 func Block(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 	data := InitPageData(w, r, "blocks", "/blocks", "")
 
 	if err != nil {
-		data.Meta.Title = fmt.Sprintf("%v - Slot %v - %v - %v", utils.Config.Frontend.SiteName, slotOrHash, utils.Config.Frontend.SiteDomain, time.Now().Year())
+		data.Meta.Title = fmt.Sprintf("%v - Slot %v - beaconcha.in - %v", utils.Config.Frontend.SiteName, slotOrHash, time.Now().Year())
 		data.Meta.Path = "/block/" + slotOrHash
 		logger.Errorf("error retrieving block data: %v", err)
 		err = blockNotFoundTemplate.ExecuteTemplate(w, "layout", data)
@@ -92,7 +92,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 		blockSlot, blockRootHash)
 
 	if err != nil {
-		data.Meta.Title = fmt.Sprintf("%v - Slot %v - %v - %v", utils.Config.Frontend.SiteName, slotOrHash, utils.Config.Frontend.SiteDomain, time.Now().Year())
+		data.Meta.Title = fmt.Sprintf("%v - Slot %v - beaconcha.in - %v", utils.Config.Frontend.SiteName, slotOrHash, time.Now().Year())
 		data.Meta.Path = "/block/" + slotOrHash
 		logger.Errorf("error retrieving block data: %v", err)
 		err = blockNotFoundTemplate.ExecuteTemplate(w, "layout", data)
@@ -105,7 +105,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data.Meta.Title = fmt.Sprintf("%v - Slot %v - %v - %v", utils.Config.Frontend.SiteName, blockPageData.Slot, utils.Config.Frontend.SiteDomain, time.Now().Year())
+	data.Meta.Title = fmt.Sprintf("%v - Slot %v - beaconcha.in - %v", utils.Config.Frontend.SiteName, blockPageData.Slot, time.Now().Year())
 	data.Meta.Path = fmt.Sprintf("/block/%v", blockPageData.Slot)
 
 	blockPageData.Ts = utils.SlotToTime(blockPageData.Slot)
@@ -190,6 +190,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
+	votesPerValidator := map[int64]int{}
 	for rows.Next() {
 		attestation := &types.BlockPageAttestation{}
 
@@ -208,8 +209,15 @@ func Block(w http.ResponseWriter, r *http.Request) {
 				IncludedIn:     attestation.BlockSlot,
 				CommitteeIndex: attestation.CommitteeIndex,
 			})
+			_, exists := votesPerValidator[validator]
+			if !exists {
+				votesPerValidator[validator] = 1
+			} else {
+				votesPerValidator[validator]++
+			}
 		}
 	}
+	blockPageData.VotingValidatorsCount = uint64(len(votesPerValidator))
 	blockPageData.Votes = votes
 	sort.Slice(blockPageData.Votes, func(i, j int) bool {
 		return blockPageData.Votes[i].Validator < blockPageData.Votes[j].Validator
