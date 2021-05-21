@@ -19,12 +19,12 @@ function switchTheme(e) {
   var d1 = document.getElementById('app-theme');
   //checked is light
   if (e.target.checked) {
-    d1.href = "/theme/css/beacon-light.min.css"
+    d1.href = window.Webroot + "/theme/css/beacon-light.min.css"
     document.documentElement.setAttribute('data-theme', 'light')
     localStorage.setItem('theme', 'light')
 
   } else { // dark theme
-    d1.href = "/theme/css/beacon-dark.min.css"
+    d1.href = window.Webroot + "/theme/css/beacon-dark.min.css"
     document.documentElement.setAttribute('data-theme', 'dark')
     localStorage.setItem('theme', 'dark')
   }
@@ -217,21 +217,21 @@ $(document).ready(function() {
 
   $('.typeahead').on('typeahead:select', function(ev, sug) {
     if (sug.slot !== undefined) {
-      window.location = '/block/' + sug.slot
+      window.location = window.Webroot + '/block/' + sug.slot
     } else if (sug.index !== undefined) {
       if (sug.index === 'deposited')
-        window.location = '/validator/' + sug.pubkey
+        window.location = window.Webroot + '/validator/' + sug.pubkey
       else 
-        window.location = '/validator/' + sug.index
+        window.location = window.Webroot + '/validator/' + sug.index
     } else if (sug.epoch !== undefined) {
-      window.location = '/epoch/' + sug.epoch
+      window.location = window.Webroot + '/epoch/' + sug.epoch
     } else if (sug.address !== undefined) {
-      window.location = '/validators/eth1deposits?q=' + sug.address
+      window.location = window.Webroot + '/validators/eth1deposits?q=' + sug.address
     } else if (sug.graffiti !== undefined) {
       // sug.graffiti is html-escaped to prevent xss, we need to unescape it
       var el = document.createElement('textarea')
       el.innerHTML = sug.graffiti
-      window.location = '/blocks?q=' + encodeURIComponent(el.value)
+      window.location = window.Webroot + '/blocks?q=' + encodeURIComponent(el.value)
     } else {
       console.log('invalid typeahead-selection', sug)
     }

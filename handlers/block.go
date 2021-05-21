@@ -51,7 +51,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		data.Meta.Title = fmt.Sprintf("%v - Slot %v - %s - %v",
 			utils.Config.Frontend.SiteName, slotOrHash, utils.Config.Frontend.SiteDomain, time.Now().Year())
-		data.Meta.Path = "/block/" + slotOrHash
+		data.Meta.Path = data.Meta.Webroot + "/block/" + slotOrHash
 		logger.Errorf("error retrieving block data: %v", err)
 		err = blockNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 
@@ -95,7 +95,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		data.Meta.Title = fmt.Sprintf("%v - Slot %v - %s - %v",
 			utils.Config.Frontend.SiteName, slotOrHash, utils.Config.Frontend.SiteDomain, time.Now().Year())
-		data.Meta.Path = "/block/" + slotOrHash
+		data.Meta.Path = data.Meta.Webroot + "/block/" + slotOrHash
 		logger.Errorf("error retrieving block data: %v", err)
 		err = blockNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 
@@ -109,7 +109,7 @@ func Block(w http.ResponseWriter, r *http.Request) {
 
 	data.Meta.Title = fmt.Sprintf("%v - Slot %v - %s - %v",
 		utils.Config.Frontend.SiteName, blockPageData.Slot, utils.Config.Frontend.SiteDomain, time.Now().Year())
-	data.Meta.Path = fmt.Sprintf("/block/%v", blockPageData.Slot)
+	data.Meta.Path = fmt.Sprintf("%s/block/%v", data.Meta.Webroot, blockPageData.Slot)
 
 	blockPageData.Ts = utils.SlotToTime(blockPageData.Slot)
 	blockPageData.SlashingsCount = blockPageData.AttesterSlashingsCount + blockPageData.ProposerSlashingsCount

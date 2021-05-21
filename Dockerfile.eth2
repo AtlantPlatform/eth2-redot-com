@@ -5,7 +5,10 @@ WORKDIR /src/
 ADD go.mod go.sum ./
 RUN go mod download -x
 ADD . ./
-RUN ls -All && make -B all
+RUN WEBROOT=/eth2 \
+    make -B all && \
+    sed -i 's@url(/@url(/eth2/@g' bin/static/theme/css/beacon-light.min.css && \
+    sed -i 's@url(/@url(/eth2/@g' bin/static/theme/css/beacon-dark.min.css
 
 # final stage
 FROM alpine

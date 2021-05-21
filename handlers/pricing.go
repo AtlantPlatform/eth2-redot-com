@@ -79,7 +79,7 @@ func PricingPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error parsing form: %v", err)
 		utils.SetFlash(w, r, "pricing_flash", "Error: invalid form submitted")
 		logger.Errorf("error parsing pricing request form for %v route: %v", r.URL.String(), err)
-		http.Redirect(w, r, "/pricing", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/pricing", http.StatusSeeOther)
 		return
 	}
 
@@ -87,7 +87,7 @@ func PricingPost(w http.ResponseWriter, r *http.Request) {
 		if len(r.FormValue("g-recaptcha-response")) == 0 {
 			utils.SetFlash(w, r, "pricing_flash", "Error: Failed to create request")
 			logger.Errorf("error no recaptca response present %v route: %v", r.URL.String(), r.FormValue("g-recaptcha-response"))
-			http.Redirect(w, r, "/pricing", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/pricing", http.StatusSeeOther)
 			return
 		}
 
@@ -95,7 +95,7 @@ func PricingPost(w http.ResponseWriter, r *http.Request) {
 		if err != nil || !valid {
 			utils.SetFlash(w, r, "pricing_flash", "Error: Failed to create request")
 			logger.Errorf("error validating recaptcha %v route: %v", r.URL.String(), err)
-			http.Redirect(w, r, "/pricing", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/pricing", http.StatusSeeOther)
 			return
 		}
 	}
@@ -121,10 +121,10 @@ func PricingPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error sending ad form: %v", err)
 		utils.SetFlash(w, r, "pricing_flash", "Error: unable to submit api request")
-		http.Redirect(w, r, "/pricing", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/pricing", http.StatusSeeOther)
 		return
 	}
 
 	utils.SetFlash(w, r, "pricing_flash", "Thank you for your inquiry, we will get back to you as soon as possible.")
-	http.Redirect(w, r, "/pricing", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/pricing", http.StatusSeeOther)
 }

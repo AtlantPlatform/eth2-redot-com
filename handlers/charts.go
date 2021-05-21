@@ -92,7 +92,7 @@ func GenericChart(w http.ResponseWriter, r *http.Request) {
 	data.Meta.Title = fmt.Sprintf("%v - %v Chart - %s - %v", chartData.Title, utils.Config.Frontend.SiteName,
 		utils.Config.Frontend.SiteDomain,
 		time.Now().Year())
-	data.Meta.Path = "/charts/" + chartVar
+	data.Meta.Path = data.Meta.Webroot + "/charts/" + chartVar
 	data.Data = chartData
 
 	genericChartTemplate = template.Must(template.New("chart").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/genericchart.html"))

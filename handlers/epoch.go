@@ -31,7 +31,7 @@ func Epoch(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		data.Meta.Title = fmt.Sprintf("%v - Epoch %v - %v - %v", utils.Config.Frontend.SiteName, epochString, utils.Config.Frontend.SiteDomain, time.Now().Year())
-		data.Meta.Path = "/epoch/" + epochString
+		data.Meta.Path = data.Meta.Webroot + "/epoch/" + epochString
 		logger.Errorf("error parsing epoch index %v: %v", epochString, err)
 		err = epochNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 
@@ -44,7 +44,7 @@ func Epoch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data.Meta.Title = fmt.Sprintf("%v - Epoch %v - %v - %v", utils.Config.Frontend.SiteName, epoch, utils.Config.Frontend.SiteDomain, time.Now().Year())
-	data.Meta.Path = fmt.Sprintf("/epoch/%v", epoch)
+	data.Meta.Path = fmt.Sprintf("%s/epoch/%v", data.Meta.Webroot, epoch)
 
 	epochPageData := types.EpochPageData{}
 

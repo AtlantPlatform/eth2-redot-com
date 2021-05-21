@@ -1,6 +1,7 @@
 package metrics
 
 import (
+	"eth2-exporter/utils"
 	"eth2-exporter/version"
 	"net/http"
 	"strconv"
@@ -94,7 +95,7 @@ func Serve(addr string) error {
 <head><title>prometheus-metrics</title></head>
 <body>
 <h1>prometheus-metrics</h1>
-<p><a href='/metrics'>metrics</a></p>
+<p><a href='` + utils.Config.Frontend.Webroot + `/metrics'>metrics</a></p>
 </body>
 </html>`))
 	}))

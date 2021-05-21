@@ -56,7 +56,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error parsing form: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -66,7 +66,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	if !utils.IsValidEmail(email) {
 		session.AddFlash("Error: Invalid email!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -75,7 +75,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error creating db-tx for registering user: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 	defer tx.Rollback()
@@ -85,7 +85,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 	if existingEmails > 0 {
 		session.AddFlash("Error: Email already exists!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -94,7 +94,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error generating hash for password: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -105,7 +105,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error generating hash for api_key: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -119,7 +119,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error saving new user into db: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -128,7 +128,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error commiting db-tx when registering user: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -142,7 +142,7 @@ func RegisterPost(w http.ResponseWriter, r *http.Request) {
 
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 }
 
 // Login handler renders a template that allows a user to login.
@@ -171,7 +171,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error parsing form: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/register", http.StatusSeeOther)
 		return
 	}
 
@@ -190,14 +190,14 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error retrieving password for user %v: %v", email, err)
 		session.AddFlash("Error: Invalid email or password!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 
 	if !user.Confirmed {
-		session.AddFlash("Error: Email has not been confirmed, please click the link in the email we sent you or <a href='/resend'>resend link</a>!")
+		session.AddFlash("Error: Email has not been confirmed, please click the link in the email we sent you or <a href='" + utils.Config.Frontend.Webroot + "/resend'>resend link</a>!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 
@@ -205,7 +205,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		session.AddFlash("Error: Invalid email or password!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 
@@ -230,12 +230,12 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		delete(session.Values, "state")
 		session.Save(r, w)
 
-		http.Redirect(w, r, "/user/authorize?redirect_uri="+redirectURI.(string)+stateParam, http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/authorize?redirect_uri="+redirectURI.(string)+stateParam, http.StatusSeeOther)
 		return
 	}
 
 	// Index(w, r)
-	http.Redirect(w, r, "/user/notifications", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/notifications", http.StatusSeeOther)
 }
 
 // Logout handles ending the user session.
@@ -250,7 +250,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	delete(session.Values, "user_id")
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/", http.StatusSeeOther)
 }
 
 // ResetPassword renders a template that lets the user reset his password.
@@ -279,13 +279,13 @@ func ResetPassword(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, sql.ErrNoRows) {
 			session.AddFlash("Error: Invalid reset link, please retry.")
 			session.Save(r, w)
-			http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 			return
 		}
 		logger.Errorf("error resetting password: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 		return
 	}
 
@@ -296,7 +296,7 @@ func ResetPassword(w http.ResponseWriter, r *http.Request) {
 			logger.Errorf("error setting confirmed when user is resetting password: %v", err)
 			session.AddFlash(authInternalServerErrorFlashMsg)
 			session.Save(r, w)
-			http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 			return
 		}
 		session.AddFlash("Your email-address has been confirmed.")
@@ -335,7 +335,7 @@ func ResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 	if !user.Authenticated {
 		session.AddFlash("Error: You are not authenticated (or did not use the correct reset-link).")
 		session.Save(r, w)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -344,7 +344,7 @@ func ResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error parsing form: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -354,7 +354,7 @@ func ResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error generating hash for password: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -363,7 +363,7 @@ func ResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error updating password for user: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -374,7 +374,7 @@ func ResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 }
 
 // RequestResetPassword renders a template that lets the user enter his email and request a reset link.
@@ -397,7 +397,7 @@ func RequestResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error parsing form: %v", err)
 		utils.SetFlash(w, r, authSessionName, authInternalServerErrorFlashMsg)
-		http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 		return
 	}
 
@@ -405,7 +405,7 @@ func RequestResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 
 	if !utils.IsValidEmail(email) {
 		utils.SetFlash(w, r, authSessionName, "Error: Invalid email address.")
-		http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 		return
 	}
 
@@ -414,13 +414,13 @@ func RequestResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error retrieving user-count: %v", err)
 		utils.SetFlash(w, r, authSessionName, authInternalServerErrorFlashMsg)
-		http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 		return
 	}
 
 	if exists == 0 {
 		utils.SetFlash(w, r, authSessionName, "Error: Email does not exist.")
-		http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 		return
 	}
 
@@ -435,7 +435,7 @@ func RequestResetPasswordPost(w http.ResponseWriter, r *http.Request) {
 		utils.SetFlash(w, r, authSessionName, "An email has been sent which contains a link to reset your password.")
 	}
 
-	http.Redirect(w, r, "/requestReset", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/requestReset", http.StatusSeeOther)
 }
 
 // ResendConfirmation handler sends a template for the user to request another confirmation link via email.
@@ -458,7 +458,7 @@ func ResendConfirmationPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error parsing form: %v", err)
 		utils.SetFlash(w, r, authSessionName, authInternalServerErrorFlashMsg)
-		http.Redirect(w, r, "/resend", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/resend", http.StatusSeeOther)
 		return
 	}
 
@@ -466,7 +466,7 @@ func ResendConfirmationPost(w http.ResponseWriter, r *http.Request) {
 
 	if !utils.IsValidEmail(email) {
 		utils.SetFlash(w, r, authSessionName, "Error: Invalid email!")
-		http.Redirect(w, r, "/resend", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/resend", http.StatusSeeOther)
 		return
 	}
 
@@ -475,13 +475,13 @@ func ResendConfirmationPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error checking if user exists for email-confirmation: %v", err)
 		utils.SetFlash(w, r, authSessionName, "Error: Something went wrong :( Please retry later")
-		http.Redirect(w, r, "/resend", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/resend", http.StatusSeeOther)
 		return
 	}
 
 	if exists == 0 {
 		utils.SetFlash(w, r, authSessionName, "Error: Email does not exist!")
-		http.Redirect(w, r, "/resend", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/resend", http.StatusSeeOther)
 		return
 	}
 
@@ -496,7 +496,7 @@ func ResendConfirmationPost(w http.ResponseWriter, r *http.Request) {
 		utils.SetFlash(w, r, authSessionName, "Email has been sent!")
 	}
 
-	http.Redirect(w, r, "/resend", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/resend", http.StatusSeeOther)
 }
 
 // ConfirmEmail confirms the email-address of a user.
@@ -512,37 +512,37 @@ func ConfirmEmail(w http.ResponseWriter, r *http.Request) {
 	`, hash)
 	if err != nil {
 		utils.SetFlash(w, r, authSessionName, authInternalServerErrorFlashMsg)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
 	if isConfirmed {
 		utils.SetFlash(w, r, authSessionName, "Error: Email has already been confirmed!")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
 	res, err := db.FrontendDB.Exec("UPDATE users SET email_confirmed = 'TRUE' WHERE email_confirmation_hash = $1", hash)
 	if err != nil {
 		utils.SetFlash(w, r, authSessionName, authInternalServerErrorFlashMsg)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
 	n, err := res.RowsAffected()
 	if err != nil {
 		utils.SetFlash(w, r, authSessionName, authInternalServerErrorFlashMsg)
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
 	if n == 0 {
 		utils.SetFlash(w, r, authSessionName, "Error: Invalid confirmation-link, please retry.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 	}
 
 	utils.SetFlash(w, r, authSessionName, "Your email has been confirmed! You can log in now.")
-	http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 }
 
 func sendConfirmationEmail(email string) error {

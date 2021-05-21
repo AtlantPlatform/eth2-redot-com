@@ -25,18 +25,18 @@ func Search(w http.ResponseWriter, r *http.Request) {
 	_, err := strconv.Atoi(search)
 
 	if err == nil {
-		http.Redirect(w, r, "/block/"+search, 301)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/block/"+search, 301)
 		return
 	}
 
 	search = strings.Replace(search, "0x", "", -1)
 
 	if len(search) == 64 {
-		http.Redirect(w, r, "/block/"+search, 301)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/block/"+search, 301)
 	} else if len(search) == 96 {
-		http.Redirect(w, r, "/validator/"+search, 301)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/validator/"+search, 301)
 	} else if utils.IsValidEth1Address(search) {
-		http.Redirect(w, r, "/validators/eth1deposits?q="+search, 301)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/validators/eth1deposits?q="+search, 301)
 	} else {
 		w.Header().Set("Content-Type", "text/html")
 		data := InitPageData(w, r, "search", "/search", "")

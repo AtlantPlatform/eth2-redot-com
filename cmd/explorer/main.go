@@ -11,6 +11,7 @@ import (
 	"eth2-exporter/utils"
 	"flag"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
@@ -74,7 +75,16 @@ func main() {
 	}
 
 	if cfg.Frontend.Enabled {
+		u, err := url.Parse(cfg.Frontend.Webroot)
+		if err != nil {
+			panic(err)
+		}
 
+		base := u.Path
+		if base == "/" {
+			base = ""
+		}
+		logrus.WithField("base", base).Info()
 		router := mux.NewRouter()
 
 		apiV1Router := mux.NewRouter().PathPrefix("/api/v1").Subrouter()
@@ -119,9 +129,9 @@ func main() {
 		apiV1AuthRouter.Use(utils.CORSMiddleware)
 		apiV1AuthRouter.Use(utils.AuthorizedAPIMiddleware)
 
-		router.PathPrefix("/api/v1").Handler(apiV1Router)
+		router.PathPrefix(base + "/api/v1").Handler(apiV1Router)
 
-		router.HandleFunc("/api/healthz", handlers.ApiHealthz).Methods("GET", "HEAD")
+		router.HandleFunc(base+"/api/healthz", handlers.ApiHealthz).Methods("GET", "HEAD")
 
 		services.Init() // Init frontend services
 		price.Init()
@@ -149,76 +159,76 @@ func main() {
 				csrf.Secure(!cfg.Frontend.CsrfInsecure),
 			)
 
-			router.HandleFunc("/", handlers.Index).Methods("GET")
-			router.HandleFunc("/latestState", handlers.LatestState).Methods("GET")
-			router.HandleFunc("/launchMetrics", handlers.LaunchMetricsData).Methods("GET")
-			router.HandleFunc("/index/data", handlers.IndexPageData).Methods("GET")
-			router.HandleFunc("/block/{slotOrHash}", handlers.Block).Methods("GET")
-			router.HandleFunc("/block/{slotOrHash}/deposits", handlers.BlockDepositData).Methods("GET")
-			router.HandleFunc("/blocks", handlers.Blocks).Methods("GET")
-			router.HandleFunc("/blocks/data", handlers.BlocksData).Methods("GET")
-			router.HandleFunc("/vis", handlers.Vis).Methods("GET")
-			router.HandleFunc("/charts", handlers.Charts).Methods("GET")
-			router.HandleFunc("/charts/{chart}", handlers.GenericChart).Methods("GET")
-			router.HandleFunc("/vis/blocks", handlers.VisBlocks).Methods("GET")
-			router.HandleFunc("/vis/votes", handlers.VisVotes).Methods("GET")
-			router.HandleFunc("/epoch/{epoch}", handlers.Epoch).Methods("GET")
-			router.HandleFunc("/epochs", handlers.Epochs).Methods("GET")
-			router.HandleFunc("/epochs/data", handlers.EpochsData).Methods("GET")
+			router.HandleFunc(base+"/", handlers.Index).Methods("GET")
+			router.HandleFunc(base+"/latestState", handlers.LatestState).Methods("GET")
+			router.HandleFunc(base+"/launchMetrics", handlers.LaunchMetricsData).Methods("GET")
+			router.HandleFunc(base+"/index/data", handlers.IndexPageData).Methods("GET")
+			router.HandleFunc(base+"/block/{slotOrHash}", handlers.Block).Methods("GET")
+			router.HandleFunc(base+"/block/{slotOrHash}/deposits", handlers.BlockDepositData).Methods("GET")
+			router.HandleFunc(base+"/blocks", handlers.Blocks).Methods("GET")
+			router.HandleFunc(base+"/blocks/data", handlers.BlocksData).Methods("GET")
+			router.HandleFunc(base+"/vis", handlers.Vis).Methods("GET")
+			router.HandleFunc(base+"/charts", handlers.Charts).Methods("GET")
+			router.HandleFunc(base+"/charts/{chart}", handlers.GenericChart).Methods("GET")
+			router.HandleFunc(base+"/vis/blocks", handlers.VisBlocks).Methods("GET")
+			router.HandleFunc(base+"/vis/votes", handlers.VisVotes).Methods("GET")
+			router.HandleFunc(base+"/epoch/{epoch}", handlers.Epoch).Methods("GET")
+			router.HandleFunc(base+"/epochs", handlers.Epochs).Methods("GET")
+			router.HandleFunc(base+"/epochs/data", handlers.EpochsData).Methods("GET")
 
-			router.HandleFunc("/validator/{index}", handlers.Validator).Methods("GET")
-			router.HandleFunc("/validator/{index}/proposedblocks", handlers.ValidatorProposedBlocks).Methods("GET")
-			router.HandleFunc("/validator/{index}/attestations", handlers.ValidatorAttestations).Methods("GET")
-			router.HandleFunc("/validator/{index}/history", handlers.ValidatorHistory).Methods("GET")
-			router.HandleFunc("/validator/{pubkey}/deposits", handlers.ValidatorDeposits).Methods("GET")
-			router.HandleFunc("/validator/{index}/slashings", handlers.ValidatorSlashings).Methods("GET")
-			router.HandleFunc("/validator/{pubkey}/save", handlers.ValidatorSave).Methods("POST")
-			router.HandleFunc("/validator/{pubkey}/add", handlers.UserValidatorWatchlistAdd).Methods("POST")
-			router.HandleFunc("/validator/{pubkey}/remove", handlers.UserValidatorWatchlistRemove).Methods("POST")
-			router.HandleFunc("/validators", handlers.Validators).Methods("GET")
-			router.HandleFunc("/validators/data", handlers.ValidatorsData).Methods("GET")
-			router.HandleFunc("/validators/slashings", handlers.ValidatorsSlashings).Methods("GET")
-			router.HandleFunc("/validators/slashings/data", handlers.ValidatorsSlashingsData).Methods("GET")
-			router.HandleFunc("/validators/leaderboard", handlers.ValidatorsLeaderboard).Methods("GET")
-			router.HandleFunc("/validators/leaderboard/data", handlers.ValidatorsLeaderboardData).Methods("GET")
-			router.HandleFunc("/validators/eth1deposits", handlers.Eth1Deposits).Methods("GET")
-			router.HandleFunc("/validators/eth1deposits/data", handlers.Eth1DepositsData).Methods("GET")
-			router.HandleFunc("/validators/eth1leaderboard", handlers.Eth1DepositsLeaderboard).Methods("GET")
-			router.HandleFunc("/validators/eth1leaderboard/data", handlers.Eth1DepositsLeaderboardData).Methods("GET")
-			router.HandleFunc("/validators/eth2deposits", handlers.Eth2Deposits).Methods("GET")
-			router.HandleFunc("/validators/eth2deposits/data", handlers.Eth2DepositsData).Methods("GET")
+			router.HandleFunc(base+"/validator/{index}", handlers.Validator).Methods("GET")
+			router.HandleFunc(base+"/validator/{index}/proposedblocks", handlers.ValidatorProposedBlocks).Methods("GET")
+			router.HandleFunc(base+"/validator/{index}/attestations", handlers.ValidatorAttestations).Methods("GET")
+			router.HandleFunc(base+"/validator/{index}/history", handlers.ValidatorHistory).Methods("GET")
+			router.HandleFunc(base+"/validator/{pubkey}/deposits", handlers.ValidatorDeposits).Methods("GET")
+			router.HandleFunc(base+"/validator/{index}/slashings", handlers.ValidatorSlashings).Methods("GET")
+			router.HandleFunc(base+"/validator/{pubkey}/save", handlers.ValidatorSave).Methods("POST")
+			router.HandleFunc(base+"/validator/{pubkey}/add", handlers.UserValidatorWatchlistAdd).Methods("POST")
+			router.HandleFunc(base+"/validator/{pubkey}/remove", handlers.UserValidatorWatchlistRemove).Methods("POST")
+			router.HandleFunc(base+"/validators", handlers.Validators).Methods("GET")
+			router.HandleFunc(base+"/validators/data", handlers.ValidatorsData).Methods("GET")
+			router.HandleFunc(base+"/validators/slashings", handlers.ValidatorsSlashings).Methods("GET")
+			router.HandleFunc(base+"/validators/slashings/data", handlers.ValidatorsSlashingsData).Methods("GET")
+			router.HandleFunc(base+"/validators/leaderboard", handlers.ValidatorsLeaderboard).Methods("GET")
+			router.HandleFunc(base+"/validators/leaderboard/data", handlers.ValidatorsLeaderboardData).Methods("GET")
+			router.HandleFunc(base+"/validators/eth1deposits", handlers.Eth1Deposits).Methods("GET")
+			router.HandleFunc(base+"/validators/eth1deposits/data", handlers.Eth1DepositsData).Methods("GET")
+			router.HandleFunc(base+"/validators/eth1leaderboard", handlers.Eth1DepositsLeaderboard).Methods("GET")
+			router.HandleFunc(base+"/validators/eth1leaderboard/data", handlers.Eth1DepositsLeaderboardData).Methods("GET")
+			router.HandleFunc(base+"/validators/eth2deposits", handlers.Eth2Deposits).Methods("GET")
+			router.HandleFunc(base+"/validators/eth2deposits/data", handlers.Eth2DepositsData).Methods("GET")
 
-			router.HandleFunc("/dashboard", handlers.Dashboard).Methods("GET")
-			router.HandleFunc("/dashboard/save", handlers.UserDashboardWatchlistAdd).Methods("POST")
+			router.HandleFunc(base+"/dashboard", handlers.Dashboard).Methods("GET")
+			router.HandleFunc(base+"/dashboard/save", handlers.UserDashboardWatchlistAdd).Methods("POST")
 
-			router.HandleFunc("/dashboard/data/balance", handlers.DashboardDataBalance).Methods("GET")
-			router.HandleFunc("/dashboard/data/proposals", handlers.DashboardDataProposals).Methods("GET")
-			router.HandleFunc("/dashboard/data/validators", handlers.DashboardDataValidators).Methods("GET")
-			router.HandleFunc("/dashboard/data/earnings", handlers.DashboardDataEarnings).Methods("GET")
-			router.HandleFunc("/graffitiwall", handlers.Graffitiwall).Methods("GET")
-			router.HandleFunc("/calculator", handlers.StakingCalculator).Methods("GET")
-			router.HandleFunc("/search", handlers.Search).Methods("POST")
-			router.HandleFunc("/search/{type}/{search}", handlers.SearchAhead).Methods("GET")
-			router.HandleFunc("/faq", handlers.Faq).Methods("GET")
-			router.HandleFunc("/imprint", handlers.Imprint).Methods("GET")
-			router.HandleFunc("/poap", handlers.Poap).Methods("GET")
-			router.HandleFunc("/poap/data", handlers.PoapData).Methods("GET")
+			router.HandleFunc(base+"/dashboard/data/balance", handlers.DashboardDataBalance).Methods("GET")
+			router.HandleFunc(base+"/dashboard/data/proposals", handlers.DashboardDataProposals).Methods("GET")
+			router.HandleFunc(base+"/dashboard/data/validators", handlers.DashboardDataValidators).Methods("GET")
+			router.HandleFunc(base+"/dashboard/data/earnings", handlers.DashboardDataEarnings).Methods("GET")
+			router.HandleFunc(base+"/graffitiwall", handlers.Graffitiwall).Methods("GET")
+			router.HandleFunc(base+"/calculator", handlers.StakingCalculator).Methods("GET")
+			router.HandleFunc(base+"/search", handlers.Search).Methods("POST")
+			router.HandleFunc(base+"/search/{type}/{search}", handlers.SearchAhead).Methods("GET")
+			router.HandleFunc(base+"/faq", handlers.Faq).Methods("GET")
+			router.HandleFunc(base+"/imprint", handlers.Imprint).Methods("GET")
+			router.HandleFunc(base+"/poap", handlers.Poap).Methods("GET")
+			router.HandleFunc(base+"/poap/data", handlers.PoapData).Methods("GET")
 
-			router.HandleFunc("/stakingServices", handlers.StakingServices).Methods("GET")
-			router.HandleFunc("/stakingServices", handlers.AddStakingServicePost).Methods("POST")
+			router.HandleFunc(base+"/stakingServices", handlers.StakingServices).Methods("GET")
+			router.HandleFunc(base+"/stakingServices", handlers.AddStakingServicePost).Methods("POST")
 
-			router.HandleFunc("/education", handlers.EducationServices).Methods("GET")
-			router.HandleFunc("/ethClients", handlers.EthClientsServices).Methods("GET")
+			router.HandleFunc(base+"/education", handlers.EducationServices).Methods("GET")
+			router.HandleFunc(base+"/ethClients", handlers.EthClientsServices).Methods("GET")
 
 			// router.HandleFunc("/advertisewithus", handlers.AdvertiseWithUs).Methods("GET")
 			// router.HandleFunc("/advertisewithus", handlers.AdvertiseWithUsPost).Methods("POST")
 
 			// confirming the email update should not require auth
-			router.HandleFunc("/settings/email/{hash}", handlers.UserConfirmUpdateEmail).Methods("GET")
+			router.HandleFunc(base+"/settings/email/{hash}", handlers.UserConfirmUpdateEmail).Methods("GET")
 
 			// router.HandleFunc("/user/validators", handlers.UserValidators).Methods("GET")
 
-			signUpRouter := router.PathPrefix("/").Subrouter()
+			signUpRouter := router.PathPrefix(base + "/").Subrouter()
 			signUpRouter.HandleFunc("/login", handlers.Login).Methods("GET")
 			signUpRouter.HandleFunc("/login", handlers.LoginPost).Methods("POST")
 			signUpRouter.HandleFunc("/logout", handlers.Logout).Methods("GET")
@@ -236,12 +246,12 @@ func main() {
 			// signUpRouter.HandleFunc("/pricing", handlers.PricingPost).Methods("POST")
 			signUpRouter.Use(csrfHandler)
 
-			oauthRouter := router.PathPrefix("/user").Subrouter()
+			oauthRouter := router.PathPrefix(base + "/user").Subrouter()
 			oauthRouter.HandleFunc("/authorize", handlers.UserAuthorizeConfirm).Methods("GET")
 			oauthRouter.HandleFunc("/cancel", handlers.UserAuthorizationCancel).Methods("GET")
 			oauthRouter.Use(csrfHandler)
 
-			authRouter := router.PathPrefix("/user").Subrouter()
+			authRouter := router.PathPrefix(base + "/user").Subrouter()
 			authRouter.HandleFunc("/authorize", handlers.UserAuthorizeConfirmPost).Methods("POST")
 			authRouter.HandleFunc("/settings", handlers.UserSettings).Methods("GET")
 			authRouter.HandleFunc("/settings/password", handlers.UserUpdatePasswordPost).Methods("POST")
@@ -257,7 +267,10 @@ func main() {
 			authRouter.Use(handlers.UserAuthMiddleware)
 			authRouter.Use(csrfHandler)
 
-			router.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
+			logrus.WithField("prefix", base+"/").
+				WithField("dir", http.Dir("static")).Info("serve static dir")
+			router.PathPrefix(base + "/").Handler(
+				http.StripPrefix(base+"/", http.FileServer(http.Dir("static"))))
 		}
 
 		n := negroni.New(negroni.NewRecovery())
@@ -290,7 +303,7 @@ func main() {
 			Handler:      n,
 		}
 
-		logrus.Printf("http server listening on %v", srv.Addr)
+		logrus.Printf("http server listening on %v. web root %s/", srv.Addr, base)
 		go func() {
 			if err := srv.ListenAndServe(); err != nil {
 				logrus.Println(err)

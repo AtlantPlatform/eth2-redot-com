@@ -30,7 +30,7 @@ func Confirmation(w http.ResponseWriter, r *http.Request) {
 	pageData.Flashes = utils.GetFlashes(w, r, authSessionName)
 
 	if len(pageData.Flashes) <= 0 {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 

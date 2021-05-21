@@ -34,7 +34,7 @@ func UserAuthMiddleware(next http.Handler) http.Handler {
 		if !user.Authenticated {
 			logger.Errorf("User not authorized")
 			utils.SetFlash(w, r, authSessionName, "Error: Please login first")
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -58,7 +58,7 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("Error retrieving the subscriptions for user: %v %v", user.UserID, err)
 		session.Flashes("Error: Something went wrong.")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
@@ -114,7 +114,7 @@ func UserAuthorizeConfirm(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error retrieving session: %v", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 
@@ -128,7 +128,7 @@ func UserAuthorizeConfirm(w http.ResponseWriter, r *http.Request) {
 
 	if !user.Authenticated {
 		logger.Errorf("User not authorized")
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 
@@ -162,7 +162,7 @@ func UserAuthorizeConfirm(w http.ResponseWriter, r *http.Request) {
 func UserAuthorizationCancel(w http.ResponseWriter, r *http.Request) {
 	_, session, err := getUserSession(w, r)
 	if err != nil {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/", http.StatusSeeOther)
 		return
 	}
 
@@ -170,7 +170,7 @@ func UserAuthorizationCancel(w http.ResponseWriter, r *http.Request) {
 	delete(session.Values, "state")
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/", http.StatusSeeOther)
 	return
 }
 
@@ -213,7 +213,7 @@ func UserNotifications(w http.ResponseWriter, r *http.Request) {
 	userNotificationsData.CountSubscriptions = countSubscriptions
 	userNotificationsData.WatchlistIndices = watchlistIndices
 	userNotificationsData.CountWatchlist = len(watchlistIndices)
-	link := "/dashboard?validators="
+	link := utils.Config.Frontend.Webroot + "/dashboard?validators="
 	for _, i := range watchlistIndices {
 		link += strconv.FormatUint(i, 10) + ","
 	}
@@ -480,17 +480,17 @@ func UserDeletePost(w http.ResponseWriter, r *http.Request) {
 		err := db.DeleteUserById(user.UserID)
 		if err != nil {
 			logger.Errorf("error deleting user by email for user: %v %v", user.UserID, err)
-			http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 			session.Flashes("Error: Could not delete user.")
 			session.Save(r, w)
-			http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+			http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 			return
 		}
 
 		Logout(w, r)
 	} else {
 		logger.Error("Trying to delete a unauthenticated user")
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 }
@@ -510,7 +510,7 @@ func UserUpdatePasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error parsing form: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/login", http.StatusSeeOther)
 		return
 	}
 	pwdNew := r.FormValue("password")
@@ -528,14 +528,14 @@ func UserUpdatePasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error retrieving password for user %v: %v", user.UserID, err)
 		session.AddFlash("Error: Invalid password!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
 	if !currentUser.Confirmed {
-		session.AddFlash("Error: Email has not been confirmed, please click the link in the email we sent you or <a href='/resend'>resend link</a>!")
+		session.AddFlash("Error: Email has not been confirmed, please click the link in the email we sent you or <a href='" + utils.Config.Frontend.Webroot + "/resend'>resend link</a>!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
@@ -544,7 +544,7 @@ func UserUpdatePasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error verifying password for user %v: %v", currentUser.Email, err)
 		session.AddFlash("Error: Invalid password!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
@@ -553,7 +553,7 @@ func UserUpdatePasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error generating hash for password: %v", err)
 		session.AddFlash(GenericUpdatePasswordError)
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
@@ -562,12 +562,12 @@ func UserUpdatePasswordPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error updating password for user: %v", err)
 		session.AddFlash("Error: Something went wrong updating your password 😕. If this error persists please contact <a href=\"https://support.bitfly.at/support/home\">support</a>")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 	session.AddFlash("Password Updated Successfully ✔️")
 	session.Save(r, w)
-	http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 }
 
 // UserUpdateEmailPost gets called from the settings page to request a new email update. Only once the update link is pressed does the email actually change.
@@ -584,7 +584,7 @@ func UserUpdateEmailPost(w http.ResponseWriter, r *http.Request) {
 		logger.Errorf("error parsing form: %v", err)
 		session.AddFlash(authInternalServerErrorFlashMsg)
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 	email := r.FormValue("email")
@@ -592,7 +592,7 @@ func UserUpdateEmailPost(w http.ResponseWriter, r *http.Request) {
 	if !utils.IsValidEmail(email) {
 		session.AddFlash("Error: Invalid email format!")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
@@ -603,12 +603,12 @@ func UserUpdateEmailPost(w http.ResponseWriter, r *http.Request) {
 	err = db.FrontendDB.Get(&existingEmails, "SELECT email FROM users WHERE email = $1", email)
 
 	if existingEmails.Email == email {
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	} else if existingEmails.Email != "" {
 		session.AddFlash("Error: Email already exists please choose a unique email")
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
@@ -622,13 +622,13 @@ func UserUpdateEmailPost(w http.ResponseWriter, r *http.Request) {
 			session.AddFlash(authInternalServerErrorFlashMsg)
 		}
 		session.Save(r, w)
-		http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 		return
 	}
 
 	session.AddFlash("Verification link sent to your new email " + email)
 	session.Save(r, w)
-	http.Redirect(w, r, "/user/settings", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/user/settings", http.StatusSeeOther)
 }
 
 // ConfirmUpdateEmail confirms and updates the email address of the user. Given an update link the email in the db is changed.
@@ -649,7 +649,7 @@ func UserConfirmUpdateEmail(w http.ResponseWriter, r *http.Request) {
 
 	if !utils.IsValidEmail(newEmail) {
 		utils.SetFlash(w, r, authSessionName, "Error: Could not update your email because the new email is invalid, please try again.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -664,19 +664,19 @@ func UserConfirmUpdateEmail(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error retreiveing email for confirmation_hash %v %v", hash, err)
 		utils.SetFlash(w, r, authSessionName, "Error: This confirmation link is invalid / outdated.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
 	if user.Confirmed != true {
 		utils.SetFlash(w, r, authSessionName, "Error: Cannot update email for an unconfirmed address.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
 	if user.ConfirmTs.Add(time.Minute * 30).Before(time.Now()) {
 		utils.SetFlash(w, r, authSessionName, "Error: This confirmation link has expired.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -684,7 +684,7 @@ func UserConfirmUpdateEmail(w http.ResponseWriter, r *http.Request) {
 	err = db.FrontendDB.Get(&emailExists, "SELECT email FROM users WHERE email = $1", newEmail)
 	if emailExists != "" {
 		utils.SetFlash(w, r, authSessionName, "Error: Email already exists. We could not update your email.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -692,7 +692,7 @@ func UserConfirmUpdateEmail(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Errorf("error: updating email for user: %v", err)
 		utils.SetFlash(w, r, authSessionName, "Error: Could not Update Email.")
-		http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+		http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 		return
 	}
 
@@ -700,7 +700,7 @@ func UserConfirmUpdateEmail(w http.ResponseWriter, r *http.Request) {
 	delete(session.Values, "user_id")
 
 	utils.SetFlash(w, r, authSessionName, "Your email has been updated successfully! <br> You can log in with your new email.")
-	http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
+	http.Redirect(w, r, utils.Config.Frontend.Webroot+"/confirmation", http.StatusSeeOther)
 }
 
 func sendEmailUpdateConfirmation(userId uint64, newEmail string) error {
@@ -770,13 +770,14 @@ func UserValidatorWatchlistAdd(w http.ResponseWriter, r *http.Request) {
 	SetAutoContentType(w, r)
 	user := getUser(w, r)
 	vars := mux.Vars(r)
+	webroot := utils.Config.Frontend.Webroot
 
 	pubKey := strings.Replace(vars["pubkey"], "0x", "", -1)
 	if !user.Authenticated {
 		FlashRedirectOrJSONErrorResponse(w, r,
 			validatorEditFlash,
-			"Error: You need a user account to follow a validator <a href=\"/login\">Login</a> or <a href=\"/register\">Sign up</a>",
-			"/validator/"+pubKey,
+			"Error: You need a user account to follow a validator <a href=\""+webroot+"/login\">Login</a> or <a href=\""+webroot+"/register\">Sign up</a>",
+			webroot+"/validator/"+pubKey,
 			http.StatusSeeOther,
 		)
 		return
@@ -1003,7 +1004,7 @@ func UserClientsDelete(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/user/validator/{pubkey}/remove [post]
 func UserValidatorWatchlistRemove(w http.ResponseWriter, r *http.Request) {
 	SetAutoContentType(w, r)
-
+	webroot := utils.Config.Frontend.Webroot
 	user := getUser(w, r)
 	vars := mux.Vars(r)
 
@@ -1011,8 +1012,8 @@ func UserValidatorWatchlistRemove(w http.ResponseWriter, r *http.Request) {
 	if !user.Authenticated {
 		FlashRedirectOrJSONErrorResponse(w, r,
 			validatorEditFlash,
-			"Error: You need a user account to follow a validator <a href=\"/login\">Login</a> or <a href=\"/register\">Sign up</a>",
-			"/validator/"+pubKey,
+			"Error: You need a user account to follow a validator <a href=\""+webroot+"/login\">Login</a> or <a href=\""+webroot+"/register\">Sign up</a>",
+			webroot+"/validator/"+pubKey,
 			http.StatusSeeOther,
 		)
 		return

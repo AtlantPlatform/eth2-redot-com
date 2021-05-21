@@ -187,12 +187,12 @@ func FormatBlockRoot(blockRoot []byte) template.HTML {
 	if len(blockRoot) < 32 {
 		return "N/A"
 	}
-	return template.HTML(fmt.Sprintf("<a href=\"/block/%x\">%v</a>", blockRoot, FormatHash(blockRoot)))
+	return template.HTML(fmt.Sprintf("<a href=\""+Config.Frontend.Webroot+"/block/%x\">%v</a>", blockRoot, FormatHash(blockRoot)))
 }
 
 // FormatBlockSlot will return the block-slot formated as html
 func FormatBlockSlot(blockSlot uint64) template.HTML {
-	return template.HTML(fmt.Sprintf("<a href=\"/block/%[1]d\">%[1]d</a>", blockSlot))
+	return template.HTML(fmt.Sprintf("<a href=\""+Config.Frontend.Webroot+"/block/%[1]d\">%[1]d</a>", blockSlot))
 }
 
 // FormatAttestationInclusionSlot will return the block-slot formated as html
@@ -284,7 +284,7 @@ func FormatEffectiveBalance(balanceInt uint64, currency string) template.HTML {
 
 // FormatEpoch will return the epoch formated as html
 func FormatEpoch(epoch uint64) template.HTML {
-	return template.HTML(fmt.Sprintf("<a href=\"/epoch/%[1]d\">%[1]d</a>", epoch))
+	return template.HTML(fmt.Sprintf("<a href=\""+Config.Frontend.Webroot+"/epoch/%[1]d\">%[1]d</a>", epoch))
 }
 
 // FormatEth1AddressString will return the eth1-address formated as html string
@@ -353,7 +353,7 @@ func FormatGraffitiAsLink(graffiti []byte) template.HTML {
 	s := strings.Map(fixUtf, string(bytes.Trim(graffiti, "\x00")))
 	h := template.HTMLEscapeString(s)
 	u := url.QueryEscape(s)
-	return template.HTML(fmt.Sprintf("<span aria-graffiti=\"%#x\"><a href=\"/blocks?q=%s\">%s</a></span>", graffiti, u, h))
+	return template.HTML(fmt.Sprintf("<span aria-graffiti=\"%#x\"><a href=\""+Config.Frontend.Webroot+"/blocks?q=%s\">%s</a></span>", graffiti, u, h))
 }
 
 // FormatHash will return a hash formated as html
@@ -457,7 +457,7 @@ func FormatPercentageWithGPrecision(percentage float64, precision int) string {
 
 // FormatPublicKey will return html formatted text for a validator-public-key
 func FormatPublicKey(validator []byte) template.HTML {
-	return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\"/validator/0x%x\">%v</a>", validator, FormatHash(validator)))
+	return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/0x%x\">%v</a>", validator, FormatHash(validator)))
 }
 
 // FormatTimestamp will return a timestamp formated as html. This is supposed to be used together with client-side js
@@ -505,14 +505,14 @@ func FormatValidatorStatus(status string) template.HTML {
 
 // FormatValidator will return html formatted text for a validator
 func FormatValidator(validator uint64) template.HTML {
-	return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\"/validator/%v\">%v</a>", validator, validator))
+	return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>", validator, validator))
 }
 
 func FormatValidatorWithName(validator uint64, name string) template.HTML {
 	if name != "" {
-		return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\"/validator/%v\"><span class=\"text-truncate\">"+html.EscapeString(name)+"</span></a>", validator))
+		return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\"><span class=\"text-truncate\">"+html.EscapeString(name)+"</span></a>", validator))
 	} else {
-		return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\"/validator/%v\">%v</a>", validator, validator))
+		return template.HTML(fmt.Sprintf("<i class=\"fas fa-male\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>", validator, validator))
 	}
 }
 
@@ -532,18 +532,18 @@ func FormatValidatorInt64(validator int64) template.HTML {
 
 // FormatSlashedValidatorInt64 will return html formatted text for a slashed validator
 func FormatSlashedValidatorInt64(validator int64) template.HTML {
-	return template.HTML(fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\"/validator/%v\">%v</a>", validator, validator))
+	return template.HTML(fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>", validator, validator))
 }
 
 // FormatSlashedValidator will return html formatted text for a slashed validator
 func FormatSlashedValidator(validator uint64) template.HTML {
-	return template.HTML(fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\"/validator/%v\">%v</a>", validator, validator))
+	return template.HTML(fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>", validator, validator))
 }
 
 // FormatSlashedValidator will return html formatted text for a slashed validator
 func FormatSlashedValidatorWithName(validator uint64, name string) template.HTML {
 	if name != "" {
-		return template.HTML(fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\"/validator/%v\">%v (<span class=\"text-truncate\">"+html.EscapeString(name)+"</span>)</a>", validator, validator))
+		return template.HTML(fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v (<span class=\"text-truncate\">"+html.EscapeString(name)+"</span>)</a>", validator, validator))
 	} else {
 		return FormatSlashedValidator(validator)
 	}
@@ -554,9 +554,9 @@ func FormatSlashedValidatorsInt64(validators []int64) template.HTML {
 	str := ""
 	for i, v := range validators {
 		if i == len(validators)+1 {
-			str += fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\"/validator/%v\">%v</a>", v, v)
+			str += fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>", v, v)
 		} else {
-			str += fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\"/validator/%v\">%v</a>, ", v, v)
+			str += fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>, ", v, v)
 		}
 	}
 	return template.HTML(str)
@@ -566,7 +566,7 @@ func FormatSlashedValidatorsInt64(validators []int64) template.HTML {
 func FormatSlashedValidators(validators []uint64) template.HTML {
 	vals := make([]string, 0, len(validators))
 	for _, v := range validators {
-		vals = append(vals, fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\"/validator/%v\">%v</a>", v, v))
+		vals = append(vals, fmt.Sprintf("<i class=\"fas fa-user-slash text-danger\"></i> <a href=\""+Config.Frontend.Webroot+"/validator/%v\">%v</a>", v, v))
 	}
 	return template.HTML(strings.Join(vals, ","))
 }

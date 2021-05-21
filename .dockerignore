@@ -1,4 +1,3 @@
 run-local
 docker-compose.yml
 config-local.yml
-config-eth2.yml
