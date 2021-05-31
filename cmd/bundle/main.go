@@ -145,6 +145,7 @@ var roots = []string{
 	"url(\\'/",
 	"url(\"/",
 	"url(\\\"/",
+	"v-bind:href=\"'/",
 }
 
 func replaceWebroot() error {
