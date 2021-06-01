@@ -1,5 +1,4 @@
-{{define "layout"}}
-    <!DOCTYPE html>
+{{define "layout"}}<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -12,7 +11,7 @@
         <meta property="og:type" content="website"/>
         <meta property="og:image" content="{{.Meta.Webroot}}/img/Redot_logo.png"/>
         <meta property="og:description" content="{{.Meta.Description}}"/>
-        <meta property="og:url" content="{{.Meta.Webroot}}{{.Meta.Path}}"/>
+        <meta property="og:url" content="{{.Meta.Path}}"/>
         <meta property="og:site_name" content="eth2.redot.com"/>
 
         <meta name="twitter:card" content="summary"/>
@@ -20,8 +19,12 @@
         <meta name="twitter:title" content="{{.Meta.Title}}"/>
         <meta property="twitter:description" content="{{.Meta.Description}}"/>
         <meta property="twitter:image" content="{{.Meta.Webroot}}/img/Redot_logo.png"/>
-        
-        <link rel="canonical" href="{{.Meta.Webroot}}{{.Meta.Path}}"/>
+
+{{if ne .Meta.Path "/"}}
+        <link rel="canonical" href="{{.Meta.Path}}"/>
+{{else}}
+        <link rel="canonical" href="{{.Meta.Webroot}}"/>
+{{end}}
 
         <title>{{.Meta.Title}}</title>
         <link rel="shortcut icon" type="image/png" href="{{.Meta.Webroot}}/img/fav/favicon-32x32.png"/>
@@ -696,7 +699,7 @@
         <footer class="container">
             <div class="text-center row justify-content-center">
                 <div class="col-12">
-                    <span>eth2.redot.com | {{.Version}} | <a href="https://github.com/AtlantPlatform/eth2-redot-com">Source</a> |</span>
+                    <span><a href="https://redot.com/">redot.com</a> | {{.Version}} | <a href="https://github.com/AtlantPlatform/eth2-redot-com">Source</a> |</span>
                     <div class="theme-switch-wrapper">
                         <label class="theme-switch" for="toggleSwitch">
                             <input type="checkbox" id="toggleSwitch"/>
@@ -727,8 +730,8 @@
 	    </div> <!-- .row -->
             <div class="text-center row justify-content-center">
 	        <div class="col-12">
-                    <span>A fork of <a href="https://beaconcha.in/">beaconcha.in</a></span>
-                </div>
+                <span>A fork of <strong>beaconcha.in</strong></span>
+            </div>
 	    </div>
         </footer>
     </div>
