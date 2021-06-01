@@ -23,7 +23,7 @@
 {{if ne .Meta.Path "/"}}
         <link rel="canonical" href="{{.Meta.Path}}"/>
 {{else}}
-        <link rel="canonical" href="{{.Meta.Webroot}}"/>
+        <link rel="canonical" href="{{.Meta.Webroot}}/"/>
 {{end}}
 
         <title>{{.Meta.Title}}</title>
