@@ -12,7 +12,7 @@
         <meta property="og:image" content="{{.Meta.Webroot}}/img/Redot_logo.png"/>
         <meta property="og:description" content="{{.Meta.Description}}"/>
         <meta property="og:url" content="{{.Meta.Path}}"/>
-        <meta property="og:site_name" content="eth2.redot.com"/>
+        <meta property="og:site_name" content="redot.com"/>
 
         <meta name="twitter:card" content="summary"/>
         <meta name="twitter:site" content="@etherchain_org"/>
@@ -20,12 +20,7 @@
         <meta property="twitter:description" content="{{.Meta.Description}}"/>
         <meta property="twitter:image" content="{{.Meta.Webroot}}/img/Redot_logo.png"/>
 
-{{if ne .Meta.Path "/"}}
         <link rel="canonical" href="{{.Meta.Path}}"/>
-{{else}}
-        <link rel="canonical" href="{{.Meta.Webroot}}/"/>
-{{end}}
-
         <title>{{.Meta.Title}}</title>
         <link rel="shortcut icon" type="image/png" href="{{.Meta.Webroot}}/img/fav/favicon-32x32.png"/>
 
@@ -142,7 +137,7 @@
     </header>
     <body ontouchstart="">
     <noscript>
-        <strong>We're sorry but eth2.redot.com doesn't work properly without JavaScript enabled. Please enable it to
+        <strong>We're sorry but redot.com doesn't work properly without JavaScript enabled. Please enable it to
             continue.</strong>
     </noscript>
     <!-- Banner -->
@@ -628,7 +623,7 @@
                         <span class="nav-text">Services</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			<a class="dropdown-item" href="https://redot.com/staking">
+                        <a class="dropdown-item" href="https://redot.com/staking/">
                             <span class="nav-icon"><i class="fas fa-drumstick-bite mr-2"></i></span>
                             <span class="nav-text">ETH2 Staking</span>
                         </a>

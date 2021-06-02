@@ -16,12 +16,20 @@ import (
 
 func InitPageData(w http.ResponseWriter, r *http.Request, active, path, title string) *types.PageData {
 	name := utils.Config.Frontend.SiteName
+	fullPath := path
+	if len(utils.Config.Frontend.Webroot) > 0 && strings.HasPrefix(path, "/") {
+		if len(path) == 0 {
+			fullPath = utils.Config.Frontend.Webroot + "/"
+		} else {
+			fullPath = utils.Config.Frontend.Webroot + path
+		}
+	}
 	data := &types.PageData{
 		HeaderAd: false,
 		Meta: &types.Meta{
 			Title:       fmt.Sprintf("%v | Ethereum 2 (ETH 2) Blockchain Explorer", name),
 			Description: fmt.Sprintf("%v provides easy to use Ethereum 2 block explorer that allows you to search for ETH 2 addresses, transactions, prices, tokens, validators, and epochs.  ", name),
-			Path:        path,
+			Path:        fullPath,
 			GATag:       utils.Config.Frontend.GATag,
 			Webroot:     utils.Config.Frontend.Webroot,
 		},
