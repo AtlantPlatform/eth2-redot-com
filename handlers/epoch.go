@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -28,10 +27,11 @@ func Epoch(w http.ResponseWriter, r *http.Request) {
 	data.HeaderAd = true
 
 	epoch, err := strconv.ParseUint(epochString, 10, 64)
+	data.Meta.Title = fmt.Sprintf("Epoch %v - Ethereum 2.0 Beacon Chain Explorer | Redot", epochString)
+	data.Meta.Description = fmt.Sprintf("Epoch %v - Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer provides easy way to search for Ethereum 2 epochs.", epochString)
+	data.Meta.Path = data.Meta.Webroot + "/epoch/" + epochString
 
 	if err != nil {
-		data.Meta.Title = fmt.Sprintf("%v - Epoch %v - %v - %v", utils.Config.Frontend.SiteName, epochString, utils.Config.Frontend.SiteDomain, time.Now().Year())
-		data.Meta.Path = data.Meta.Webroot + "/epoch/" + epochString
 		logger.Errorf("error parsing epoch index %v: %v", epochString, err)
 		err = epochNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 
@@ -42,9 +42,6 @@ func Epoch(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-
-	data.Meta.Title = fmt.Sprintf("%v - Epoch %v - %v - %v", utils.Config.Frontend.SiteName, epoch, utils.Config.Frontend.SiteDomain, time.Now().Year())
-	data.Meta.Path = fmt.Sprintf("%s/epoch/%v", data.Meta.Webroot, epoch)
 
 	epochPageData := types.EpochPageData{}
 

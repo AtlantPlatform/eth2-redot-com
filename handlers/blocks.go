@@ -19,6 +19,8 @@ func Blocks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
 	data := InitPageData(w, r, "blocks", "/blocks", "Blocks")
+	data.Meta.Title = "Ethereum 2.0 Blocks - Beacon Chain Explorer | Redot"
+	data.Meta.Description = "Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer provides easy way to search for Ethereum 2 blocks on redot.com"
 
 	err := blocksTemplate.ExecuteTemplate(w, "layout", data)
 

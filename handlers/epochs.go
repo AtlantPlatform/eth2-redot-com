@@ -20,7 +20,9 @@ func Epochs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
 	data := InitPageData(w, r, "epochs", "/epochs", "Epochs")
-	data.HeaderAd = true
+	data.HeaderAd = false
+	data.Meta.Title = "Ethereum 2.0 Epochs - Beacon Chain Explorer | Redot"
+	data.Meta.Description = "Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer provides easy way to search for Ethereum 2 epochs on redot.com"
 
 	err := epochsTemplate.ExecuteTemplate(w, "layout", data)
 

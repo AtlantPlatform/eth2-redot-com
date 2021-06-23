@@ -12,7 +12,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/juliangruber/go-intersect"
 
@@ -47,11 +46,10 @@ func Block(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := InitPageData(w, r, "blocks", "/blocks", "")
-
+	data.Meta.Title = fmt.Sprintf("Block at Slot %v - Ethereum 2.0 Beacon Chain Explorer | Redot", blockSlot)
+	data.Meta.Description = fmt.Sprintf("Block at Slot %v - Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer provides easy way to search for Ethereum 2 blocks", blockSlot)
+	data.Meta.Path = data.Meta.Webroot + "/block/" + slotOrHash
 	if err != nil {
-		data.Meta.Title = fmt.Sprintf("%v - Slot %v - %s - %v",
-			utils.Config.Frontend.SiteName, slotOrHash, utils.Config.Frontend.SiteDomain, time.Now().Year())
-		data.Meta.Path = data.Meta.Webroot + "/block/" + slotOrHash
 		logger.Errorf("error retrieving block data: %v", err)
 		err = blockNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 
@@ -93,9 +91,6 @@ func Block(w http.ResponseWriter, r *http.Request) {
 		blockSlot, blockRootHash)
 
 	if err != nil {
-		data.Meta.Title = fmt.Sprintf("%v - Slot %v - %s - %v",
-			utils.Config.Frontend.SiteName, slotOrHash, utils.Config.Frontend.SiteDomain, time.Now().Year())
-		data.Meta.Path = data.Meta.Webroot + "/block/" + slotOrHash
 		logger.Errorf("error retrieving block data: %v", err)
 		err = blockNotFoundTemplate.ExecuteTemplate(w, "layout", data)
 
@@ -106,10 +101,6 @@ func Block(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-
-	data.Meta.Title = fmt.Sprintf("%v - Slot %v - %s - %v",
-		utils.Config.Frontend.SiteName, blockPageData.Slot, utils.Config.Frontend.SiteDomain, time.Now().Year())
-	data.Meta.Path = fmt.Sprintf("%s/block/%v", data.Meta.Webroot, blockPageData.Slot)
 
 	blockPageData.Ts = utils.SlotToTime(blockPageData.Slot)
 	blockPageData.SlashingsCount = blockPageData.AttesterSlashingsCount + blockPageData.ProposerSlashingsCount

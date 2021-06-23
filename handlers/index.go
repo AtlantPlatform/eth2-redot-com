@@ -38,6 +38,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	data.Data = services.LatestIndexPageData()
 
 	data.Data.(*types.IndexPageData).ShowSyncingMessage = data.ShowSyncingMessage
+	data.Meta.Title = "Eth 2.0 Blockchain Explorer - Beacon Chain (Phase 0) | Redot"
+	data.Meta.Description = "Ethereum 2.0 Explorer provides easy to use Ethereum 2 block explorer that allows you to search for ETH 2 addresses, transactions, prices, tokens, validators, and epochs."
 
 	err := indexTemplate.ExecuteTemplate(w, "layout", data)
 

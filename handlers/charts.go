@@ -4,10 +4,8 @@ import (
 	"eth2-exporter/services"
 	"eth2-exporter/types"
 	"eth2-exporter/utils"
-	"fmt"
 	"html/template"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -17,12 +15,36 @@ var genericChartTemplate = template.Must(template.New("chart").Funcs(utils.GetTe
 var chartsUnavailableTemplate = template.Must(template.New("chart").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/chartsunavailable.html"))
 var slotVizTemplate = template.Must(template.New("slotViz").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/slotViz.html"))
 
+func getChartMeta(chartVar string) (string, string) {
+	switch chartVar {
+	case "blocks":
+		return "Ethereum 2.0 Blocks Daily Chart | Redot",
+			"The easiest way to check out the history of ETH 2.0 daily blocks proposed using block explorer on redot."
+	case "validators":
+		return "Ethereum 2.0 Active Validators Daily Chart | Redot",
+			"The easiest way to check out the history of ETH 2.0 daily active validators using block explorer on redot."
+	default:
+		return "Ethereum 2.0 (ETH) Charts - Redot",
+			"Check out Ethereum 2.0 (ETH) Charts - Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer"
+	}
+}
+
+func getChartHeader(chartVar string) string {
+	switch chartVar {
+	case "blocks":
+		return "Ethereum 2.0 Blocks Chart"
+	case "validators":
+		return "Ethereum 2.0 Validators Chart"
+	default:
+		return "Charts from the Ethereum 2.0 Network"
+	}
+}
+
 // Charts uses a go template for presenting the page to show charts
 func Charts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
 	data := InitPageData(w, r, "stats", "/charts", "Charts")
-
 	chartsPageData := services.LatestChartsPageData()
 	if chartsPageData == nil {
 		err := chartsUnavailableTemplate.ExecuteTemplate(w, "layout", data)
@@ -35,6 +57,8 @@ func Charts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data.Data = chartsPageData
+	data.Meta.Title = "Ethereum 2.0 (ETH) Charts - Redot"
+	data.Meta.Description = "Check out Ethereum 2.0 (ETH) Charts - Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer"
 
 	chartsTemplate = template.Must(template.New("charts").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/charts.html"))
 	err := chartsTemplate.ExecuteTemplate(w, "layout", data)
@@ -64,6 +88,7 @@ func GenericChart(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
 	data := InitPageData(w, r, "stats", "/charts", "Chart")
+	data.Meta.Title, data.Meta.Description = getChartMeta(chartVar)
 
 	chartsPageData := services.LatestChartsPageData()
 	if chartsPageData == nil {
@@ -83,16 +108,13 @@ func GenericChart(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
+	chartData.H1 = getChartHeader(chartVar)
 
 	if chartData == nil {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 
-	data.Meta.Title = fmt.Sprintf("%v - %v Chart - %s - %v", chartData.Title, utils.Config.Frontend.SiteName,
-		utils.Config.Frontend.SiteDomain,
-		time.Now().Year())
-	data.Meta.Path = data.Meta.Webroot + "/charts/" + chartVar
 	data.Data = chartData
 
 	genericChartTemplate = template.Must(template.New("chart").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/genericchart.html"))

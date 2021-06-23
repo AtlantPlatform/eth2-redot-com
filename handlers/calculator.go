@@ -28,6 +28,8 @@ func StakingCalculator(w http.ResponseWriter, r *http.Request) {
 
 	data := InitPageData(w, r, "stats", "/calculator", "Staking calculator")
 	data.Data = calculatorPageData
+	data.Meta.Title = "Ethereum (ETH) Staking Calculator | Convert ETH to Validators - Redot"
+	data.Meta.Description = "Ethereum 2.0 to Validators Convertion using our crypto staking calculator with economical and network parameters."
 
 	// stakingCalculatorTemplate = template.Must(template.New("staking_estimator").Funcs(utils.GetTemplateFuncs()).ParseFiles("templates/layout.html", "templates/calculator.html"))
 	err = stakingCalculatorTemplate.ExecuteTemplate(w, "layout", data)

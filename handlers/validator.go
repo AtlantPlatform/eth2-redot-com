@@ -203,8 +203,8 @@ func Validator(w http.ResponseWriter, r *http.Request) {
 
 	// GetAvgOptimalInclusionDistance(index)
 
-	data.Meta.Title = fmt.Sprintf("%v - Validator %v - %s - %v",
-		utils.Config.Frontend.SiteName, index, utils.Config.Frontend.SiteDomain, time.Now().Year())
+	data.Meta.Title = fmt.Sprintf("Validator %v - Ethereum 2.0 Beacon Chain Explorer | Redot", index)
+	data.Meta.Description = fmt.Sprintf("Validator %v - Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer provides easy way to search for Ethereum 2 validators", index)
 	data.Meta.Path = fmt.Sprintf("%s/validator/%v", data.Meta.Webroot, index)
 
 	// logger.Infof("retrieving data, elapsed: %v", time.Since(start))

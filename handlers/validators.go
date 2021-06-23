@@ -64,7 +64,8 @@ func Validators(w http.ResponseWriter, r *http.Request) {
 	data := InitPageData(w, r, "validators", "/validators", "Validators")
 	data.HeaderAd = true
 	data.Data = validatorsPageData
-
+	data.Meta.Title = "Ethereum 2.0 Validators - Beacon Chain Explorer | Redot"
+	data.Meta.Description = "Ethereum 2.0 Beacon Chain (Phase 0) Block Chain Explorer provides easy way to search for Ethereum 2 validators on redot.com"
 	err = validatorsTemplate.ExecuteTemplate(w, "layout", data)
 
 	if err != nil {
